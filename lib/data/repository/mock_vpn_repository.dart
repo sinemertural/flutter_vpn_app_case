@@ -14,7 +14,10 @@ class MockVpnRepository implements VpnRepository{
         city: "",
         locationCount: 4,
         strength: 70,
-        isConnected: false);
+        isConnected: false,
+        isFree: true,
+
+    );
 
     var c2 = Country(
         name: "Netherlands",
@@ -22,7 +25,9 @@ class MockVpnRepository implements VpnRepository{
         city: "Amsterdam",
         locationCount: 12,
         strength: 85,
-        isConnected: false);
+        isConnected: false,
+        isFree: false,
+    );
 
     var c3 = Country(
         name: "Germany",
@@ -30,7 +35,9 @@ class MockVpnRepository implements VpnRepository{
         city: "",
         locationCount: 10,
         strength: 90,
-        isConnected: false);
+        isConnected: false,
+        isFree: true,
+    );
 
     countryList.add(c1);
     countryList.add(c2);

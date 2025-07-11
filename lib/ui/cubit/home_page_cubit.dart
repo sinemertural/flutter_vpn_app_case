@@ -29,7 +29,6 @@ class HomePageCubit extends Cubit<ConnectionStats> {
     );
 
     _timer = Timer.periodic(const Duration(seconds: 1), (_) {
-      log("Connection time: ${state.connectedTime}", name: "HomePageCubit");
       emit(ConnectionStats(
       downloadSpeed: state.downloadSpeed,
       uploadSpeed: state.uploadSpeed,
@@ -55,4 +54,8 @@ class HomePageCubit extends Cubit<ConnectionStats> {
     _timer?.cancel();
     return super.close();
   }
+
+
+
+
 }

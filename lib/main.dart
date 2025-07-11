@@ -22,11 +22,11 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => HomePageCubit()),
       ],
       child: MaterialApp(
-        title: 'Flutter Demo',
+        title: 'VPN App',
         debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        ),
+        theme: ThemeData.light(),
+        darkTheme: ThemeData.dark(),
+        themeMode: ThemeMode.system,
         home: const BasePage(),
       ),
     );
