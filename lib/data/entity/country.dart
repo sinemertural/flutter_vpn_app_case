@@ -5,7 +5,7 @@ class Country{
   int locationCount ;
   int strength;
   bool isConnected;
-  bool? isFree;
+  bool isFree;
 
   Country({
     required this.name,
@@ -14,6 +14,6 @@ class Country{
     required this.locationCount,
     required this.strength,
     required this.isConnected,
-     this.isFree,
+    required this.isFree,
       });
 }

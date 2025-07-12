@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lottie/lottie.dart';
-import 'package:vpn_app_case/core/theme/app_colors.dart';
 import 'package:vpn_app_case/data/entity/connection_stats.dart';
 import 'package:vpn_app_case/data/entity/country.dart';
-import 'package:vpn_app_case/data/repository/mock_vpn_repository.dart';
 import 'package:vpn_app_case/ui/cubit/base_page_cubit.dart';
 import 'package:vpn_app_case/ui/cubit/home_page_cubit.dart';
+import 'package:vpn_app_case/ui/widgets/country_card.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -16,35 +15,24 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   Country? expandedCountry;
-  List<Country> freeCountries = [];
 
   @override
   void initState() {
     super.initState();
-    _loadFreeCountries();
-  }
-
-  Future<void> _loadFreeCountries() async {
-    var countries = await MockVpnRepository().getCountries();
-    setState(() {
-      freeCountries = countries.where((c) => c.isFree == true).toList();
-    });
+    context.read<HomePageCubit>().loadFreeCountries();
   }
 
   @override
   Widget build(BuildContext context) {
+    final freeCountries = context.watch<HomePageCubit>().freeCountries;
+    final theme = Theme.of(context);
+    final textTheme = theme.textTheme;
+
     return Scaffold(
-      backgroundColor: AppColors.backgroundLight,
+      backgroundColor: theme.scaffoldBackgroundColor,
       appBar: AppBar(
-        backgroundColor: AppColors.primaryBlue,
-        title: const Text(
-          "Home",
-          style: TextStyle(
-            fontSize: 28,
-            fontWeight: FontWeight.bold,
-            color: AppColors.textWhite,
-          ),
-        ),
+        backgroundColor: theme.appBarTheme.backgroundColor,
+        title: Text("Home", style: TextStyle(fontSize: 28),),
       ),
       body: BlocBuilder<HomePageCubit, ConnectionStats>(
         builder: (context, state) {
@@ -59,16 +47,17 @@ class _HomePageState extends State<HomePage> {
                   },
                   decoration: InputDecoration(
                     filled: true,
-                    fillColor: AppColors.textWhite,
+                    fillColor: theme.cardColor,
                     hintText: "Search Country",
-                    prefixIcon: const Icon(Icons.search, color: AppColors.textGray),
+                    hintStyle: TextStyle(color: theme.hintColor),
+                    prefixIcon: Icon(Icons.search, color: theme.hintColor),
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
-                      borderSide: const BorderSide(color: Colors.grey, width: 1.5),
+                      borderSide: BorderSide(color: theme.hintColor, width: 1.5),
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
-                      borderSide: const BorderSide(color: AppColors.textGray, width: 1.5),
+                      borderSide: BorderSide(color: theme.colorScheme.primary, width: 1.5),
                     ),
                   ),
                 ),
@@ -76,15 +65,15 @@ class _HomePageState extends State<HomePage> {
                 const SizedBox(height: 16),
 
                 if (state.connectedCountry == null)
-                  const Center(
+                  Center(
                     child: Text(
                       "No active connection",
-                      style: TextStyle(fontSize: 18, color: AppColors.textGray),
+                      style: textTheme.bodyMedium?.copyWith(color: theme.hintColor),
                     ),
                   )
                 else
                   Card(
-                    color: AppColors.textWhite,
+                    color: theme.cardColor,
                     margin: const EdgeInsets.symmetric(vertical: 16),
                     elevation: 2,
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
@@ -102,14 +91,14 @@ class _HomePageState extends State<HomePage> {
                                 children: [
                                   Text(
                                     state.connectedCountry!.name,
-                                    style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                                    style: textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
                                   ),
                                   const SizedBox(height: 2),
                                   Text(
                                     state.connectedCountry!.city.isNotEmpty
                                         ? state.connectedCountry!.city
                                         : 'Unknown',
-                                    style: const TextStyle(fontSize: 16, color: AppColors.textGray),
+                                    style: textTheme.bodySmall?.copyWith(color: theme.hintColor),
                                   ),
                                 ],
                               ),
@@ -124,6 +113,9 @@ class _HomePageState extends State<HomePage> {
                                   showDialog(
                                     context: context,
                                     barrierDismissible: false,
+                                    barrierColor: Theme.of(context).brightness == Brightness.dark
+                                        ? Colors.black.withOpacity(0.6)
+                                        : Colors.white.withOpacity(0.6),
                                     builder: (context) {
                                       return Center(
                                         child: SizedBox(
@@ -140,26 +132,25 @@ class _HomePageState extends State<HomePage> {
                                   Navigator.of(context).pop();
                                 },
                                 style: ElevatedButton.styleFrom(
-                                  backgroundColor: AppColors.textDark,
+                                  backgroundColor: theme.colorScheme.error,
                                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
                                   padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 10),
                                 ),
-                                child: const Text(
+                                child: Text(
                                   "DISCONNECT",
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w900,
-                                    color: AppColors.textWhite,
-                                    fontSize: 20,
+                                  style: textTheme.titleMedium?.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                    color: theme.colorScheme.onError,
                                   ),
                                 ),
                               )
                             ],
                           ),
                           const SizedBox(height: 8),
-                          const Center(
+                          Center(
                             child: Text(
                               "Connected",
-                              style: TextStyle(color: Colors.green, fontWeight: FontWeight.w700, fontSize: 25),
+                              style: textTheme.titleLarge?.copyWith(color: Colors.green),
                             ),
                           ),
                           const SizedBox(height: 8),
@@ -168,7 +159,7 @@ class _HomePageState extends State<HomePage> {
                               "${state.connectedTime.inHours.toString().padLeft(2, '0')}"
                                   ":${(state.connectedTime.inMinutes % 60).toString().padLeft(2, '0')}"
                                   ":${(state.connectedTime.inSeconds % 60).toString().padLeft(2, '0')}",
-                              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
+                              style: textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.w700),
                             ),
                           ),
                           const SizedBox(height: 8),
@@ -178,38 +169,29 @@ class _HomePageState extends State<HomePage> {
                               Expanded(
                                 child: Column(
                                   children: [
-                                    const Text("Download", style: TextStyle(color: AppColors.textGray)),
+                                    Text("Download", style: textTheme.bodySmall?.copyWith(color: theme.hintColor)),
                                     Text("${state.downloadSpeed} MB",
-                                        style: const TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 18,
-                                            color: AppColors.textDark)),
+                                        style: textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.bold)),
                                   ],
                                 ),
                               ),
-                              Container(height: 40, width: 1, color: Colors.grey.shade300),
+                              Container(height: 40, width: 1, color: theme.dividerColor),
                               Expanded(
                                 child: Column(
                                   children: [
-                                    const Text("Upload", style: TextStyle(color: AppColors.textGray)),
+                                    Text("Upload", style: textTheme.bodySmall?.copyWith(color: theme.hintColor)),
                                     Text("${state.uploadSpeed} MB",
-                                        style: const TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 18,
-                                            color: AppColors.textDark)),
+                                        style: textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.bold)),
                                   ],
                                 ),
                               ),
-                              Container(height: 40, width: 1, color: Colors.grey.shade300),
+                              Container(height: 40, width: 1, color: theme.dividerColor),
                               Expanded(
                                 child: Column(
                                   children: [
-                                    const Text("Signal", style: TextStyle(color: AppColors.textGray)),
+                                    Text("Signal", style: textTheme.bodySmall?.copyWith(color: theme.hintColor)),
                                     Text("${state.connectedCountry!.strength}%",
-                                        style: const TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 18,
-                                            color: AppColors.textDark)),
+                                        style: textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.bold)),
                                   ],
                                 ),
                               ),
@@ -221,9 +203,9 @@ class _HomePageState extends State<HomePage> {
                   ),
 
                 const SizedBox(height: 24),
-                const Text(
+                Text(
                   "Free Countries",
-                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: AppColors.textDark),
+                  style: textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
                 ),
 
                 const SizedBox(height: 8),
@@ -231,97 +213,40 @@ class _HomePageState extends State<HomePage> {
                 ...freeCountries.map((country) {
                   bool isExpanded = expandedCountry == country;
 
-                  return GestureDetector(
+                  return CountryCard(
+                    country: country,
+                    isExpanded: isExpanded,
                     onTap: () {
                       setState(() {
                         expandedCountry = isExpanded ? null : country;
                       });
                     },
-                    child: Card(
-                      color: AppColors.textWhite,
-                      margin: const EdgeInsets.symmetric(vertical: 8),
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                      elevation: 2,
-                      child: Padding(
-                        padding: const EdgeInsets.all(12),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              children: [
-                                Image.asset(country.flag, width: 40, height: 30),
-                                const SizedBox(width: 16),
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text(country.name,
-                                          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-                                      Text("${country.locationCount} locations",
-                                          style: const TextStyle(color: AppColors.textGray)),
-                                    ],
-                                  ),
-                                ),
-                                Container(
-                                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                                  decoration: BoxDecoration(
-                                    border: Border.all(color: Colors.green, width: 1.5),
-                                    borderRadius: BorderRadius.circular(12),
-                                  ),
-                                  child: const Text("FREE",
-                                      style: TextStyle(color: Colors.green, fontWeight: FontWeight.bold)),
-                                ),
-                                const SizedBox(width: 8),
-                                Icon(isExpanded ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down,
-                                    color: AppColors.textDark),
-                              ],
+                    onConnectPressed: () async {
+                      showDialog(
+                        context: context,
+                        barrierDismissible: false,
+                        barrierColor: Theme.of(context).brightness == Brightness.dark
+                            ? Colors.black.withOpacity(0.6)
+                            : Colors.white.withOpacity(0.6),
+                        builder: (context) {
+                          return Center(
+                            child: SizedBox(
+                              width: 200,
+                              height: 200,
+                              child: Lottie.asset('assets/animations/connecting_animation.json'),
                             ),
-                            if (isExpanded) ...[
-                              const SizedBox(height: 8),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  ElevatedButton(
-                                    onPressed: () async {
-                                      showDialog(
-                                        context: context,
-                                        barrierDismissible: false,
-                                        builder: (context) {
-                                          return Center(
-                                            child: SizedBox(
-                                              width: 200,
-                                              height: 200,
-                                              child: Lottie.asset(
-                                                  'assets/animations/connecting_animation.json'),
-                                            ),
-                                          );
-                                        },
-                                      );
+                          );
+                        },
+                      );
 
-                                      await Future.delayed(const Duration(seconds: 2));
-                                      context.read<HomePageCubit>().connect(country);
-                                      Navigator.of(context).pop();
 
-                                      setState(() {
-                                        expandedCountry = null;
-                                      });
-                                    },
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: AppColors.primaryBlue,
-                                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                                    ),
-                                    child: const Text(
-                                      "Connect",
-                                      style: TextStyle(color: AppColors.textWhite, fontWeight: FontWeight.bold),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ],
-                        ),
-                      ),
-                    ),
+                      await Future.delayed(const Duration(seconds: 2));
+                      context.read<HomePageCubit>().connect(country);
+                      Navigator.of(context).pop();
+                      setState(() {
+                        expandedCountry = null;
+                      });
+                    },
                   );
                 }).toList(),
               ],

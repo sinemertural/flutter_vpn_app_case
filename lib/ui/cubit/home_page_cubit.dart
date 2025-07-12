@@ -3,18 +3,28 @@ import 'dart:developer';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vpn_app_case/data/entity/connection_stats.dart';
 import 'package:vpn_app_case/data/entity/country.dart';
+import 'package:vpn_app_case/data/repository/vpn_repository.dart';
 
 class HomePageCubit extends Cubit<ConnectionStats> {
 
-  Timer? _timer;
+  final VpnRepository repository;
 
-  HomePageCubit() : super(
+  Timer? _timer;
+  List<Country> freeCountries = [];
+
+  HomePageCubit(this.repository) : super(
     ConnectionStats(
         downloadSpeed: 0,
         uploadSpeed: 0,
         connectedTime: Duration.zero,
         connectedCountry: null)
   );
+
+  Future<void> loadFreeCountries() async {
+    final allCountries = await repository.getCountries();
+    freeCountries = allCountries.where((c) => c.isFree).toList();
+    emit(state);
+  }
 
   void connect(Country country){
     log("Connected to: ${country.name}", name: "HomePageCubit");
