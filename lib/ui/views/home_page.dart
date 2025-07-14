@@ -32,7 +32,8 @@ class _HomePageState extends State<HomePage> {
       backgroundColor: theme.scaffoldBackgroundColor,
       appBar: AppBar(
         backgroundColor: theme.appBarTheme.backgroundColor,
-        title: Text("Home", style: TextStyle(fontSize: 28),),
+        title: Text("Home"),
+
       ),
       body: BlocBuilder<HomePageCubit, ConnectionStats>(
         builder: (context, state) {
@@ -212,10 +213,12 @@ class _HomePageState extends State<HomePage> {
 
                 ...freeCountries.map((country) {
                   bool isExpanded = expandedCountry == country;
+                  bool isConnected = state.connectedCountry?.name == country.name;
 
                   return CountryCard(
                     country: country,
                     isExpanded: isExpanded,
+                    isConnected: isConnected,
                     onTap: () {
                       setState(() {
                         expandedCountry = isExpanded ? null : country;
@@ -246,6 +249,28 @@ class _HomePageState extends State<HomePage> {
                       setState(() {
                         expandedCountry = null;
                       });
+                    },
+                    onDisconnectPressed: () async {
+                      showDialog(
+                        context: context,
+                        barrierDismissible: false,
+                        barrierColor: Theme.of(context).brightness == Brightness.dark
+                            ? Colors.black.withOpacity(0.6)
+                            : Colors.white.withOpacity(0.6),
+                        builder: (context) {
+                          return Center(
+                            child: SizedBox(
+                              width: 200,
+                              height: 200,
+                              child: Lottie.asset('assets/animations/Disconnect.json'),
+                            ),
+                          );
+                        },
+                      );
+
+                      context.read<HomePageCubit>().disconnect();
+                      await Future.delayed(const Duration(seconds: 2));
+                      Navigator.of(context).pop();
                     },
                   );
                 }).toList(),

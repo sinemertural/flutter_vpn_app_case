@@ -39,7 +39,7 @@ class _BasePageState extends State<BasePage> {
               ),
             ],
             currentIndex: selectedPage,
-            selectedItemColor: theme.colorScheme.primary,
+            selectedItemColor: theme.primaryColorDark,
             unselectedItemColor: theme.hintColor,
             selectedLabelStyle: const TextStyle(fontWeight: FontWeight.bold),
             unselectedLabelStyle: const TextStyle(fontWeight: FontWeight.normal),

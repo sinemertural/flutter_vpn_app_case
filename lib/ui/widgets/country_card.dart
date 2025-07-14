@@ -6,6 +6,9 @@ class CountryCard extends StatelessWidget {
   final bool isExpanded;
   final VoidCallback onTap;
   final VoidCallback? onConnectPressed;
+  final bool isConnected;
+  final VoidCallback? onDisconnectPressed;
+
 
   const CountryCard({
     super.key,
@@ -13,6 +16,8 @@ class CountryCard extends StatelessWidget {
     required this.isExpanded,
     required this.onTap,
     this.onConnectPressed,
+    this.onDisconnectPressed,
+    required this.isConnected,
   });
 
   @override
@@ -106,23 +111,23 @@ class CountryCard extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     ElevatedButton(
-                      onPressed: onConnectPressed,
+                      onPressed: isConnected ? onDisconnectPressed : onConnectPressed,
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: theme.primaryColor,
+                        backgroundColor: isConnected ? theme.colorScheme.error : Theme.of(context).primaryColor,
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
+                          borderRadius: BorderRadius.circular(24),
                         ),
-                        padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
+                        padding: const EdgeInsets.symmetric(horizontal: 36, vertical: 10),
                       ),
                       child: Text(
-                        "Connect",
+                        isConnected ? "DISCONNECT" : "CONNECT",
                         style: TextStyle(
-                          color: theme.appBarTheme.foregroundColor ?? Colors.white,
+                          color: Colors.white,
                           fontWeight: FontWeight.bold,
-                          fontSize: 18,
+                          fontSize: 16,
                         ),
                       ),
-                    ),
+                    )
                   ],
                 ),
               ]

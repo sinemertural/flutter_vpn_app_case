@@ -17,7 +17,7 @@ class AppTheme {
       foregroundColor: textLight,
       titleTextStyle: TextStyle(
         color: textLight,
-        fontSize: 20,
+        fontSize: 28,
         fontWeight: FontWeight.bold,
       ),
       iconTheme: IconThemeData(color: textLight),

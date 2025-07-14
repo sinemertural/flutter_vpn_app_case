@@ -29,6 +29,8 @@ class _CountrySelectionPageState extends State<CountrySelectionPage> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final textColor = theme.appBarTheme.foregroundColor ?? Colors.white;
+    final connectedCountry = context.watch<HomePageCubit>().state.connectedCountry;
+
 
     return Scaffold(
       backgroundColor: theme.scaffoldBackgroundColor,
@@ -53,13 +55,7 @@ class _CountrySelectionPageState extends State<CountrySelectionPage> {
             context.read<ConnectionStatsPageCubit>().filterCountries(searchQuery);
           },
         )
-            : Text(
-          "Country Selection",
-          style: TextStyle(
-            fontSize: 28,
-            color: textColor,
-            fontWeight: FontWeight.bold,
-          ),
+            : Text("Country Selection",
         ),
         actions: [
           IconButton(
@@ -84,9 +80,11 @@ class _CountrySelectionPageState extends State<CountrySelectionPage> {
                 final country = countryList[index];
                 final isExpanded = expandedCountry == country;
 
+
                 return CountryCard(
                   country: country,
                   isExpanded: isExpanded,
+                  isConnected: connectedCountry?.name == country.name,
                   onTap: () {
                     if (country.isFree) {
                       setState(() => expandedCountry = isExpanded ? null : country);
@@ -144,11 +142,30 @@ class _CountrySelectionPageState extends State<CountrySelectionPage> {
                       ),
                     );
 
-
                     await Future.delayed(const Duration(seconds: 2));
                     context.read<HomePageCubit>().connect(country);
                     Navigator.of(context).pop();
                     context.read<BasePageCubit>().changPage(0);
+                  },
+                  onDisconnectPressed: () async {
+                    showDialog(
+                      context: context,
+                      barrierDismissible: false,
+                      barrierColor: Theme.of(context).brightness == Brightness.dark
+                          ? Colors.black.withOpacity(0.6)
+                          : Colors.white.withOpacity(0.6),
+                      builder: (context) => Center(
+                        child: SizedBox(
+                          width: 200,
+                          height: 200,
+                          child: Lottie.asset('assets/animations/Disconnect.json'),
+                        ),
+                      ),
+                    );
+
+                    context.read<HomePageCubit>().disconnect();
+                    await Future.delayed(const Duration(seconds: 2));
+                    Navigator.of(context).pop();
                   },
                 );
               },
