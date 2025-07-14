@@ -22,10 +22,10 @@ Uygulama, MVVM ve BLoC mimarisi ile organize edilmiştir.
 lib/
 ├── core/
 │ └── theme/
-│ └── app_theme.dart # Tema ayarları
+│ └── app_theme.dart # Açık/koyu tema tanımları
 ├── data/
 │ ├── entity/
-│ │ ├── country.dart # Country veri modeli
+│ │ ├── country.dart # Ülke veri modeli
 │ │ └── connection_stats.dart # Bağlantı istatistik modeli
 │ └── repository/
 │ ├── mock_vpn_repository.dart # Mock veri sağlayıcı
@@ -41,7 +41,7 @@ lib/
 │ │ └── country_selection_page.dart
 │ └── widgets/
 │ └── country_card.dart # Ülke kartı bileşeni
-└── main.dart # Uygulama başlatıcısı
+└── main.dart # Uygulama başlatıcısı ve MultiBlocProvider
 
 
 ## 🛠 Teknik Detaylar
