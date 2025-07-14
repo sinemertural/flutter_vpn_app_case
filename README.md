@@ -17,6 +17,33 @@ Bu proje, Flutter ile geliştirilen bir VPN kullanıcı arayüzü simülasyonudu
 
 Uygulama, MVVM ve BLoC mimarisi ile organize edilmiştir.
 
+lib/
+├── core/
+│ └── theme/
+│ └── app_theme.dart # Açık/koyu tema tanımları
+│
+├── data/
+│ ├── entity/
+│ │ ├── country.dart # Country veri modeli
+│ │ └── connection_stats.dart # Bağlantı istatistik modeli
+│ └── repository/
+│ ├── mock_vpn_repository.dart # Mock veri sağlayıcı
+│ └── vpn_repository.dart # Repository arayüzü
+│
+├── ui/
+│ ├── cubit/
+│ │ ├── base_page_cubit.dart
+│ │ ├── home_page_cubit.dart
+│ │ └── connection_selection_page_cubit.dart
+│ ├── views/
+│ │ ├── base_page.dart
+│ │ ├── home_page.dart
+│ │ └── country_selection_page.dart
+│ └── widgets/
+│ └── country_card.dart # Ülke kartı bileşeni
+│
+└── main.dart # Uygulama başlatıcısı ve MultiBlocProvider
+
 
 ## 🛠 Teknik Detaylar
 
