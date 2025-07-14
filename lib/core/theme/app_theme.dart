@@ -48,7 +48,7 @@ class AppTheme {
       foregroundColor: textLight,
       titleTextStyle: TextStyle(
         color: textLight,
-        fontSize: 20,
+        fontSize: 28,
         fontWeight: FontWeight.bold,
       ),
       iconTheme: IconThemeData(color: textLight),
@@ -63,7 +63,7 @@ class AppTheme {
     dividerColor: Color(0xFF444444),
     bottomNavigationBarTheme: const BottomNavigationBarThemeData(
       backgroundColor: Color(0xFF1E1E1E),
-      selectedItemColor: primaryBlue,
+      selectedItemColor: Colors.white,
       unselectedItemColor: textMedium,
       selectedLabelStyle: TextStyle(fontWeight: FontWeight.bold),
       unselectedLabelStyle: TextStyle(fontWeight: FontWeight.normal),

@@ -100,7 +100,17 @@ class _CountrySelectionPageState extends State<CountrySelectionPage> {
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              const Icon(Icons.lock, size: 48, color: Colors.amber),
+                              SizedBox(
+                                width: 64,
+                                height: 64,
+                                child: Lottie.asset(
+                                  'assets/animations/locked_animation.json',
+                                  repeat: false,
+                                  animate: false,
+                                  fit: BoxFit.contain,
+                                ),
+                              ),
+
                               const SizedBox(height: 16),
                               Text(
                                 "Premium Server",

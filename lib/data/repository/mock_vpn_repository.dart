@@ -48,7 +48,7 @@ class MockVpnRepository implements VpnRepository {
 
   @override
   Future<List<Country>> getFilteredCountries(String query) async {
-    await Future.delayed(const Duration(milliseconds: 300));
+    await Future.delayed(const Duration(milliseconds: 100));
     if (query.isEmpty) {
       return _countries;
     }

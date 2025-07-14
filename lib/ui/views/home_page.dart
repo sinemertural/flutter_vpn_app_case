@@ -63,15 +63,32 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
 
+
+
                 const SizedBox(height: 16),
 
-                if (state.connectedCountry == null)
+                if (state.connectedCountry == null) ...[
                   Center(
                     child: Text(
                       "No active connection",
                       style: textTheme.bodyMedium?.copyWith(color: theme.hintColor),
                     ),
-                  )
+                  ),
+                  const SizedBox(height: 16),
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 16),
+                    child: SizedBox(
+                      height: 180,
+                      child: Lottie.asset(
+                        'assets/animations/earth_animation_v2.json',
+                        repeat: true,
+                        animate: true,
+                        options: LottieOptions(enableMergePaths: true),
+                        fit: BoxFit.contain,
+                      ),
+                    ),
+                  ),
+                ]
                 else
                   Card(
                     color: theme.cardColor,
@@ -122,7 +139,7 @@ class _HomePageState extends State<HomePage> {
                                         child: SizedBox(
                                           width: 200,
                                           height: 200,
-                                          child: Lottie.asset('assets/animations/Disconnect.json'),
+                                          child: Lottie.asset('assets/animations/Disconnect.json',),
                                         ),
                                       );
                                     },
@@ -171,33 +188,91 @@ class _HomePageState extends State<HomePage> {
                                 child: Column(
                                   children: [
                                     Text("Download", style: textTheme.bodySmall?.copyWith(color: theme.hintColor)),
+                                    const SizedBox(height: 4),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: List.generate(3, (index) {
+                                        return AnimatedContainer(
+                                          duration: Duration(milliseconds: 300 + index * 150),
+                                          margin: const EdgeInsets.symmetric(horizontal: 2),
+                                          width: 6,
+                                          height: (index + 1) * 6.0,
+                                          decoration: BoxDecoration(
+                                            color: Colors.green,
+                                            borderRadius: BorderRadius.circular(2),
+                                          ),
+                                        );
+                                      }),
+                                    ),
+                                    const SizedBox(height: 4),
                                     Text("${state.downloadSpeed} MB",
                                         style: textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.bold)),
                                   ],
                                 ),
                               ),
-                              Container(height: 40, width: 1, color: theme.dividerColor),
+                              Container(height: 60, width: 1, color: theme.dividerColor),
                               Expanded(
                                 child: Column(
                                   children: [
                                     Text("Upload", style: textTheme.bodySmall?.copyWith(color: theme.hintColor)),
+                                    const SizedBox(height: 4),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: List.generate(3, (index) {
+                                        return AnimatedContainer(
+                                          duration: Duration(milliseconds: 300 + index * 150),
+                                          margin: const EdgeInsets.symmetric(horizontal: 2),
+                                          width: 6,
+                                          height: (3 - index) * 6.0,
+                                          decoration: BoxDecoration(
+                                            color: Colors.blue,
+                                            borderRadius: BorderRadius.circular(2),
+                                          ),
+                                        );
+                                      }),
+                                    ),
+                                    const SizedBox(height: 4),
                                     Text("${state.uploadSpeed} MB",
                                         style: textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.bold)),
                                   ],
                                 ),
                               ),
-                              Container(height: 40, width: 1, color: theme.dividerColor),
+                              Container(height: 60, width: 1, color: theme.dividerColor),
                               Expanded(
                                 child: Column(
                                   children: [
                                     Text("Signal", style: textTheme.bodySmall?.copyWith(color: theme.hintColor)),
+                                    const SizedBox(height: 4),
+                                    AnimatedContainer(
+                                      duration: const Duration(milliseconds: 400),
+                                      height: 10,
+                                      width: 60,
+                                      decoration: BoxDecoration(
+                                        color: Colors.grey[300],
+                                        borderRadius: BorderRadius.circular(4),
+                                      ),
+                                      child: Align(
+                                        alignment: Alignment.centerLeft,
+                                        child: FractionallySizedBox(
+                                          widthFactor: state.connectedCountry!.strength / 100,
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                              color: Colors.orange,
+                                              borderRadius: BorderRadius.circular(4),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(height: 4),
                                     Text("${state.connectedCountry!.strength}%",
                                         style: textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.bold)),
                                   ],
                                 ),
                               ),
                             ],
-                          ),
+                          )
+
                         ],
                       ),
                     ),
