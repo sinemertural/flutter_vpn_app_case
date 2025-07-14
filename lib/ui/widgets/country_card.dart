@@ -122,7 +122,9 @@ class CountryCard extends StatelessWidget {
                       child: Text(
                         isConnected ? "DISCONNECT" : "CONNECT",
                         style: TextStyle(
-                          color: theme.colorScheme.onError,
+                          color: isConnected
+                              ? theme.colorScheme.onError
+                              : Colors.white,
                           fontWeight: FontWeight.bold,
                           fontSize: 16,
                         ),
