@@ -46,13 +46,11 @@ Uygulama, MVVM ve BLoC mimarisi ile organize edilmiştir.
 
 ## 📽️ Uygulama Tanıtım Videosu
 
-## 📽️ Uygulama Tanıtım Videosu
-
 [![Watch the demo](https://img.shields.io/badge/📹%20Demo%20Videosu-İzle-blue?style=for-the-badge&logo=google-drive)](https://drive.google.com/file/d/1qy1czjWc81p9YEa6bJz3clMsMQqdCUDo/view?usp=sharing)
 
 
 
-📌 Notlar
+## 📌 Notlar
 
 - Bu proje, gerçek bir VPN bağlantısı sağlamaz.
 - Uygulamanın amacı Flutter UI geliştirme, mimari yapı kurma ve state yönetimi pratiklerini göstermektir.
@@ -60,6 +58,8 @@ Uygulama, MVVM ve BLoC mimarisi ile organize edilmiştir.
 
   
 ✍️ Bu uygulama, Flutter'da temiz kod, modüler yapı ve modern UI/UX uygulamalarını bir araya getirerek örnek bir case niteliğindedir. Uygulama geliştirme sürecinde ThemeData, Lottie, Cubit, Stream, Timer, BlocBuilder gibi pek çok Flutter özelliği etkili şekilde kullanılmıştır.
+
+
 
 🧑‍💻 Developed by Sinem ERTURAL
 
