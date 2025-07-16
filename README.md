@@ -44,6 +44,14 @@ Uygulama, MVVM ve BLoC mimarisi ile organize edilmiştir.
 - flutter pub get
 - flutter run
 
+## 📽️ Uygulama Tanıtım Videosu
+
+## 📽️ Uygulama Tanıtım Videosu
+
+[![Watch the demo](https://img.shields.io/badge/📹%20Demo%20Videosu-İzle-blue?style=for-the-badge&logo=google-drive)](https://drive.google.com/file/d/1qy1czjWc81p9YEa6bJz3clMsMQqdCUDo/view?usp=sharing)
+
+
+
 📌 Notlar
 
 - Bu proje, gerçek bir VPN bağlantısı sağlamaz.
