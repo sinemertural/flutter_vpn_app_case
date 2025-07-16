@@ -39,7 +39,7 @@ Uygulama, MVVM ve BLoC mimarisi ile organize edilmiştir.
 
 ## 🚀 Kurulum
 
-- https://github.com/sinemertural/flutter_vpn_app_case.git
+- git clone https://github.com/sinemertural/flutter_vpn_app_case.git
 - cd vpn_app_case
 - flutter pub get
 - flutter run
